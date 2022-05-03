@@ -31,7 +31,7 @@ function UploadForm() {
 
     const storage = getStorage(firebaseApp);
     const fileName = timestamp + "_uploaded_" + Date.now().toString();
-    const storageRef = ref(storage, timestamp);
+    const storageRef = ref(storage, fileName);
 
     // Todo: Is there a way to link uploaded files to documents? Reference types?
     uploadBytes(storageRef, file).then((snapshot) => {
