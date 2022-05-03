@@ -3,11 +3,23 @@ import { firebaseDb, firebaseApp } from "./firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes, getStorage } from "firebase/storage";
 
+function getGeocodeUrl(city, state, country) {
+  return (
+    "https://nominatim.openstreetmap.org/search?format=json&limit=1&city=" +
+    encodeURIComponent(city) +
+    "&state=" +
+    encodeURIComponent(state) +
+    "&country=" +
+    encodeURIComponent(country)
+  );
+}
+
 function UploadForm() {
   const [formInputs, setFormInputs] = useState({
-    timestamp: 0,
-    lat: 0,
-    lng: 0,
+    timestamp: Date.now(),
+    city: "",
+    state: "",
+    country: "usa",
     isInterview: true,
   });
 
@@ -15,11 +27,12 @@ function UploadForm() {
 
   function addToDb(event) {
     event.preventDefault();
-    const lat = parseFloat(formInputs.lat);
-    const lng = parseFloat(formInputs.lng);
+    const city = formInputs.city;
+    const state = formInputs.state;
+    const country = formInputs.country;
     const timestamp = formInputs.timestamp;
     const isInterview = formInputs.isInterview;
-    if (!lat || !lng || !timestamp) {
+    if (!city || !state || !country || !timestamp) {
       alert("You forgot one of the fields you dumb fuck");
       return;
     }
@@ -34,24 +47,32 @@ function UploadForm() {
     const storageRef = ref(storage, fileName);
 
     // Todo: Is there a way to link uploaded files to documents? Reference types?
-    uploadBytes(storageRef, file).then((snapshot) => {
-      const docRef = addDoc(collection(firebaseDb, "interviews"), {
-        timestamp,
-        is_interview: isInterview,
-        interview: snapshot.ref.fullPath,
-        location: { latitude: lat, longitude: lng },
+    Promise.all([
+      uploadBytes(storageRef, file),
+      fetch(getGeocodeUrl(city, state, country)),
+    ])
+      .then(([snapshot, locationResponse]) => {
+        return Promise.all([snapshot, locationResponse.json()]);
       })
-        .then(() => {
-          setFormInputs({
-            timestamp: 0,
-            lat: 0,
-            lng: 0,
-            isInterview: true,
-          });
-          alert("Uploaded doc ", docRef);
+      .then(([snapshot, location]) => {
+        const docRef = addDoc(collection(firebaseDb, "interviews"), {
+          timestamp,
+          is_interview: isInterview,
+          interview: snapshot.ref.fullPath,
+          location: location[0],
         })
-        .catch((e) => console.error("Error adding document: ", e));
-    });
+          .then(() => {
+            setFormInputs({
+              timestamp: 0,
+              city: "",
+              state: "",
+              country: "usa",
+              isInterview: true,
+            });
+            alert("Uploaded doc ", docRef);
+          })
+          .catch((e) => console.error("Error adding document: ", e));
+      });
   }
 
   function onChangeInput(event) {
@@ -77,18 +98,25 @@ function UploadForm() {
         onChange={onChangeInput}
       ></input>
       <br />
-      <label>Latitude: </label>
+      <label>City: </label>
       <input
         type="string"
-        name="lat"
-        value={formInputs.lat}
+        name="city"
+        value={formInputs.city}
         onChange={onChangeInput}
       ></input>
-      <label>Longitude: </label>
+      <label>State: </label>
       <input
         type="string"
-        name="lng"
-        value={formInputs.lng}
+        name="state"
+        value={formInputs.state}
+        onChange={onChangeInput}
+      ></input>
+      <label>Country: </label>
+      <input
+        type="string"
+        name="country"
+        value={formInputs.country}
         onChange={onChangeInput}
       ></input>
       <br />
