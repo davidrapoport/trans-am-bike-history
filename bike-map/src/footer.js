@@ -30,7 +30,7 @@ function Footer() {
           </p>{" "}
           <p>
             I got the idea then that I wanted to make a time capsule of the
-            trail, and then to bike again in 30 years (assuming skiing doesn't
+            trail, and then to bike again in 30 years (assuming skiing doesn't{" "}
             <a href="https://www.youtube.com/watch?v=6SaLA1CyQk8">
               ruin my knees
             </a>
