@@ -21,16 +21,20 @@ function Footer() {
             the morning I ran off to grab some breakfast at the{" "}
             <a href="https://goo.gl/maps/aAkR6HxFzMeMB5YcA">RFG cafe</a>*. The
             lady who ran the shop had a map up on the wall with pins marking
-            where all her visitors were from. There was one pin up from Sweden
-            and she told me that that came from a 60ish year old guy who had
-            biked the trail about 40 years back. She said that he went on and on
-            about how all the towns along the way had changed, how the country
-            had changed.
+            where all her visitors were from. There was one pin up from{" "}
+            <a href="https://en.wikipedia.org/wiki/Sweden">Sweden</a>* and she
+            told me that that came from a 60ish year old guy who had biked the
+            trail about 40 years back. She said that he went on and on about how
+            all the towns along the way had changed, how the country had
+            changed.
           </p>{" "}
           <p>
             I got the idea then that I wanted to make a time capsule of the
             trail, and then to bike again in 30 years (assuming skiing doesn't
-            ruin my knees by then). A reroute is taking me up north, to the{" "}
+            <a href="https://www.youtube.com/watch?v=6SaLA1CyQk8">
+              ruin my knees
+            </a>
+            * by then). A reroute is taking me up north, to the{" "}
             <a href="https://www.adventurecycling.org/routes-and-maps/adventure-cycling-route-network/northern-tier/">
               Northern Tier of the Trans Am
             </a>
@@ -39,7 +43,7 @@ function Footer() {
             30 years later and see how things have changed.
           </p>
           <p className="footnote">
-            *Yes, these are affiliate links. Duh, it's 2022.
+            *These are affiliate links. It's 2022, gotta monetize this somehow.
           </p>
           <div>
             <p>
