@@ -27,11 +27,12 @@ function BikeMap({ interviews }) {
   //     parseFloat(lastInterviewLocation.lon),
   //   ];
   // }
+
   return (
     <MapContainer center={centerPoint} zoom={4} scrollWheelZoom={false}>
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
       />
       {markers}
     </MapContainer>

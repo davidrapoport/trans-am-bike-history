@@ -17,4 +17,3 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAnalytics = getAnalytics(firebaseApp);
 export const firebaseDb = getFirestore(firebaseApp);
 export const firebaseAuth = getAuth(firebaseApp);
-export const currentUser = firebaseAuth.currentUser;

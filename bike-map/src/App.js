@@ -1,13 +1,14 @@
 import "./App.css";
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 import BikeMap from "./bikeMap";
+import Footer from "./footer";
+import Header from "./header";
 
 import { collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { firebaseDb, firebaseAuth } from "./firebase";
+import { firebaseDb } from "./firebase";
 
 function App() {
   const [interviews, setInterviews] = useState([]);
@@ -16,35 +17,38 @@ function App() {
     const storage = getStorage();
 
     // Why is this query returning dupes?
-    getDocs(collection(firebaseDb, "interviews")).then((querySnapshot) =>
-      querySnapshot.forEach((doc) => {
-        const metadata = doc.data();
-        if (!metadata.interview) {
-          return;
-        }
-        getDownloadURL(ref(storage, metadata.interview)).then((url) => {
-          setInterviews((prevInterviews) => [
-            {
-              interviewURL: url,
-              location: metadata.location,
-              isInterview: metadata.isInterview,
-              timestamp: metadata.timestamp,
-            },
-            ...prevInterviews,
-          ]);
-        });
-      })
-    );
+    // TODO: use Promise.all to collect all of the interviews
+    // Then sort them before storing inState, maybe dedupe,
+    // and set isDataLoaded bool to true.
+    getDocs(collection(firebaseDb, "interviews"))
+      .then((querySnapshot) =>
+        querySnapshot.forEach((doc) => {
+          const metadata = doc.data();
+          if (!metadata.interview) {
+            return;
+          }
+          getDownloadURL(ref(storage, metadata.interview)).then((url) => {
+            setInterviews((prevInterviews) => [
+              {
+                interviewURL: url,
+                location: metadata.location,
+                isInterview: metadata.isInterview,
+                timestamp: metadata.timestamp,
+              },
+              ...prevInterviews,
+            ]);
+          });
+        })
+      )
+      .catch((reason) => console.error("Failed to get docs for ", reason));
   }, []);
-  const currentUser = firebaseAuth.currentUser;
   return (
     <div className="App">
-      {currentUser ? (
-        <Link to="/uploadForm">Upload Form</Link>
-      ) : (
-        <Link to="/adminLogin">Admin Login</Link>
-      )}
-      <BikeMap interviews={interviews} />
+      <Header />
+      <div className="bike-map">
+        <BikeMap interviews={interviews} />
+      </div>
+      <Footer />
     </div>
   );
 }

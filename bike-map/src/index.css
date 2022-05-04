@@ -5,6 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+   background-image: -webkit-linear-gradient(to bottom right, #b5abaa 0%, #9aa2f5 100%);
+  background-image: -moz-linear-gradient(to bottom right, #b5abaa 0%, #9aa2f5 100%);
+  background-image: -ms-linear-gradient(to bottom right, #b5abaa 0%, #9aa2f5 100%);
+  background-image: -o-linear-gradient(to bottom right, #b5abaa 0%, #9aa2f5 100%);
+  background-image: linear-gradient(to bottom right, #b5abaa 0%, #9aa2f5 100%);
 }
 
 code {
@@ -12,6 +17,31 @@ code {
     monospace;
 }
 
+.bike-map {
+  display: flex;
+  justify-content: center;
+}
+
 .leaflet-container {
   height: 400px;
+  width: 80%;
+  box-shadow: 3px 3px 2px #9aa2f5;
+  border-radius: 4px;
+  margin-bottom: 25px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 82%;
+}
+
+.footnote {
+  font-size: 10px;
+  margin-bottom: 16px;
 }
